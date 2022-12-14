@@ -15,6 +15,7 @@ defmodule Schemas.UserAvailableFolder do
     |> cast(attrs, [:user_id, :customer_folder_id])
     |> cast_assoc(:user)
     |> cast_assoc(:customer_folder)
+    |> unique_constraint([:customer_folder_id, :user_id])
     |> validate_required([])
   end
 
