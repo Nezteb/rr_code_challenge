@@ -37,7 +37,7 @@ defmodule RrCodeChallenge.PortfolioManagement do
     })
     |> Repo.insert()
     |> case do
-      {:ok, _} -> {:ok, :success}
+      {:ok, _} -> {:ok, :added}
       # Instead of doing a query to check if the relation exists, we'll try the insert and parse out an index violation
       {:error, %{errors: [customer_folder_id: {"has already been taken", _}]}} -> {:ok, :noop}
       {:error, error} -> {:error, error}
