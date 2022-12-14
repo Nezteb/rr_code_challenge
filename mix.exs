@@ -5,7 +5,7 @@ defmodule RrCodeChallenge.MixProject do
     [
       app: :rr_code_challenge,
       version: "0.1.0",
-      elixir: "~> 1.12",
+      elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
@@ -44,7 +44,10 @@ defmodule RrCodeChallenge.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:faker, "~> 0.17.0"},
-      {:plug_cowboy, "~> 2.5"}
+      {:plug_cowboy, "~> 2.5"},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
+      {:ecto_erd, "~> 0.5", only: :dev}
     ]
   end
 
@@ -59,7 +62,8 @@ defmodule RrCodeChallenge.MixProject do
       setup: ["deps.get", "ecto.setup"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
+      lint: ["dialyzer --quiet", "credo"]
     ]
   end
 end
