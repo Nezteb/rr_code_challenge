@@ -12,7 +12,12 @@ defmodule Schemas.UserAvailableFolder do
   @doc false
   def changeset(user_available_folder, attrs) do
     user_available_folder
-    |> cast(attrs, [])
+    |> cast(attrs, [:user_id, :customer_folder_id])
+    |> cast_assoc(:user)
+    |> cast_assoc(:customer_folder)
     |> validate_required([])
   end
+
+  def create_changeset(attrs),
+    do: %__MODULE__{} |> changeset(attrs)
 end
