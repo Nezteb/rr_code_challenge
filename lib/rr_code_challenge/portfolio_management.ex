@@ -7,10 +7,30 @@ defmodule RrCodeChallenge.PortfolioManagement do
     CustomerFolder,
     CustomerVendorAllocation,
     Vendor,
-    CustomerVendor
+    CustomerVendor,
+    Customer,
+    User
   }
 
   def grant_user_access_to_customer_folder(user_id, folder_id) do
+    user_ids_allowed_to_access_folder = Repo.all(
+      from c in Customer,
+        left_join: u in User,
+        on: u.customer_id == c.id,
+        left_join: cf in CustomerFolder,
+        on: cf.customer_id == c.id,
+        where: cf.id == ^folder_id,
+        select: u.id
+    )
+
+    if user_id in user_ids_allowed_to_access_folder do
+      create_user_folder_relation(user_id, folder_id)
+    else
+      {:error, :unauthorized}
+    end
+  end
+
+  defp create_user_folder_relation(user_id, folder_id) do
     UserAvailableFolder.create_changeset(%{
       user_id: user_id,
       customer_folder_id: folder_id

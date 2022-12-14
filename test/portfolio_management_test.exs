@@ -85,7 +85,7 @@ defmodule Data.PortfolioManagementTest do
   # Setup Helpers
   defp setup_user(_) do
     customer = Factory.insert!(:customer)
-    user = Factory.insert!(:user)
+    user = Factory.insert!(:user, [customer: customer])
 
     {:ok, [user: user, customer: customer]}
   end
